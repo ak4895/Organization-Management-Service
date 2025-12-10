@@ -27,17 +27,17 @@ A multi-tenant backend service built with **FastAPI** and **MongoDB** that suppo
 - **Validation**: Comprehensive input validation using Pydantic
 - **Error Handling**: Proper error responses with meaningful messages
 
-## � Live Demo
+## 🌐 Live Demo
 
 **No setup required!** Test the API directly:
 
 | Resource | URL |
 |----------|-----|
-| **API Base URL** | `https://organization-management-service.onrender.com` |
-| **Swagger Docs** | `https://organization-management-service.onrender.com/docs` |
-| **ReDoc** | `https://organization-management-service.onrender.com/redoc` |
+| **API Base URL** | `https://organization-management-service-1.onrender.com` |
+| **Swagger Docs** | `https://organization-management-service-1.onrender.com/docs` |
+| **ReDoc** | `https://organization-management-service-1.onrender.com/redoc` |
 
-## �🏗️ Architecture
+## �️ Architecture
 
 ### High-Level Architecture
 
@@ -256,9 +256,9 @@ open http://127.0.0.1:8000/docs
 
 | Resource | URL |
 |----------|-----|
-| **API Base URL** | `https://organization-management-service.onrender.com` |
-| **API Documentation (Swagger)** | `https://organization-management-service.onrender.com/docs` |
-| **API Documentation (ReDoc)** | `https://organization-management-service.onrender.com/redoc` |
+| **API Base URL** | `https://organization-management-service-1.onrender.com` |
+| **API Documentation (Swagger)** | `https://organization-management-service-1.onrender.com/docs` |
+| **API Documentation (ReDoc)** | `https://organization-management-service-1.onrender.com/redoc` |
 
 ### Deploy Your Own Instance
 
