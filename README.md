@@ -10,6 +10,7 @@ A multi-tenant backend service built with **FastAPI** and **MongoDB** that suppo
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Running the Application](#running-the-application)
+- [Deployment](#deployment)
 - [API Documentation](#api-documentation)
 - [Design Choices & Trade-offs](#design-choices--trade-offs)
 - [Future Improvements](#future-improvements)
@@ -212,6 +213,99 @@ curl http://127.0.0.1:8000/
 # Or open in browser
 open http://127.0.0.1:8000/docs
 ```
+
+## 🌐 Deployment
+
+### Live Deployment
+
+| Resource | URL |
+|----------|-----|
+| **API Base URL** | `https://organization-management-service.onrender.com` |
+| **API Documentation (Swagger)** | `https://organization-management-service.onrender.com/docs` |
+| **API Documentation (ReDoc)** | `https://organization-management-service.onrender.com/redoc` |
+
+### Deploy Your Own Instance
+
+#### Step 1: Set Up MongoDB Atlas (Free Database)
+
+1. Go to [mongodb.com/atlas](https://www.mongodb.com/atlas)
+2. Sign up and create a **Free Shared Cluster (M0)**
+3. Click **"Connect"** → **"Connect your application"**
+4. Copy the connection string:
+   ```
+   mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+   ```
+5. In **Network Access**, add IP: `0.0.0.0/0` (allow all)
+
+#### Step 2: Deploy on Render
+
+1. Go to [render.com](https://render.com) and sign up with GitHub
+2. Click **"New +"** → **"Web Service"**
+3. Select your repository: `Organization-Management-Service`
+4. Configure the service:
+
+   | Field | Value |
+   |-------|-------|
+   | **Name** | `organization-management-service` |
+   | **Region** | Oregon (US West) or nearest |
+   | **Branch** | `main` |
+   | **Runtime** | `Python 3` |
+   | **Build Command** | `pip install -r requirements.txt` |
+   | **Start Command** | `uvicorn app.main:app --host 0.0.0.0 --port $PORT` |
+
+5. Add **Environment Variables**:
+
+   | Key | Value |
+   |-----|-------|
+   | `SECRET_KEY` | Generate a secure random string |
+   | `ALGORITHM` | `HS256` |
+   | `ACCESS_TOKEN_EXPIRE_MINUTES` | `30` |
+   | `MONGODB_URL` | Your MongoDB Atlas connection string |
+   | `MASTER_DB_NAME` | `master_organization_db` |
+   | `DEBUG` | `false` |
+
+6. Click **"Create Web Service"**
+
+#### Deployment Files
+
+The following files are required for Render deployment:
+
+**Procfile**:
+```
+web: uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
+```
+
+**render.yaml** (optional - for blueprint deployment):
+```yaml
+services:
+  - type: web
+    name: organization-management-service
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 30
+      - key: MONGODB_URL
+        sync: false
+      - key: MASTER_DB_NAME
+        value: master_organization_db
+      - key: DEBUG
+        value: false
+```
+
+#### Alternative Deployment Platforms
+
+| Platform | Best For | Free Tier |
+|----------|----------|-----------|
+| **Render** | Simple deployment | ✅ 750 hours/month |
+| **Railway** | Easiest setup | ✅ $5/month credit |
+| **Fly.io** | Global edge | ✅ 3 shared VMs |
+| **Vercel** | Serverless | ✅ Generous limits |
 
 ## 📚 API Documentation
 
@@ -568,6 +662,8 @@ Organization-Management-Service/
 │       └── admin.py            # Admin authentication endpoints
 ├── .env                        # Environment variables (not in git)
 ├── requirements.txt            # Python dependencies
+├── Procfile                    # Render deployment configuration
+├── render.yaml                 # Render blueprint (optional)
 ├── ARCHITECTURE.md             # Detailed architecture documentation
 ├── DIAGRAMS.md                 # System diagrams
 └── README.md                   # This file
