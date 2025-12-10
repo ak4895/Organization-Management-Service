@@ -5,6 +5,7 @@ A multi-tenant backend service built with **FastAPI** and **MongoDB** that suppo
 ## 📋 Table of Contents
 
 - [Features](#features)
+- [Live Demo](#-live-demo)
 - [Architecture](#architecture)
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
@@ -26,7 +27,17 @@ A multi-tenant backend service built with **FastAPI** and **MongoDB** that suppo
 - **Validation**: Comprehensive input validation using Pydantic
 - **Error Handling**: Proper error responses with meaningful messages
 
-## 🏗️ Architecture
+## � Live Demo
+
+**No setup required!** Test the API directly:
+
+| Resource | URL |
+|----------|-----|
+| **API Base URL** | `https://organization-management-service.onrender.com` |
+| **Swagger Docs** | `https://organization-management-service.onrender.com/docs` |
+| **ReDoc** | `https://organization-management-service.onrender.com/redoc` |
+
+## �🏗️ Architecture
 
 ### High-Level Architecture
 
@@ -149,24 +160,49 @@ docker run -d --name mongodb -p 27017:27017 mongo:7.0
 
 ## ⚙️ Configuration
 
-Create a `.env` file in the project root:
+### Environment Setup
+
+1. Copy the example environment file:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Update the `.env` file with your values:
+
+   | Variable | Description | Example |
+   |----------|-------------|---------|
+   | `MONGODB_URL` | MongoDB connection string | `mongodb+srv://user:pass@cluster.mongodb.net/` |
+   | `MASTER_DB_NAME` | Master database name | `master_organization_db` |
+   | `SECRET_KEY` | JWT secret (generate with `openssl rand -hex 32`) | `a1b2c3d4e5f6...` |
+   | `ALGORITHM` | JWT algorithm | `HS256` |
+   | `ACCESS_TOKEN_EXPIRE_MINUTES` | Token expiry in minutes | `30` |
+   | `DEBUG` | Debug mode | `True` |
+
+### Quick Setup for Evaluators
 
 ```bash
-# Create .env file
-cat > .env << 'EOF'
-# MongoDB Configuration
-MONGODB_URL=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/
-MASTER_DB_NAME=master-organization
+# 1. Clone and enter directory
+git clone https://github.com/ak4895/Organization-Management-Service.git
+cd Organization-Management-Service
 
-# JWT Configuration
-SECRET_KEY=your-secret-key-here-change-in-production
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
+# 2. Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-# Application Configuration
-APP_NAME=Organization Management Service
-DEBUG=True
-EOF
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Create .env file from template
+cp .env.example .env
+
+# 5. Edit .env with your MongoDB Atlas URL
+# Get free MongoDB at: https://mongodb.com/atlas
+
+# 6. Run the application
+uvicorn app.main:app --reload
+
+# 7. Open API docs
+open http://localhost:8000/docs
 ```
 
 **⚠️ Security Note**: 
