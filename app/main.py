@@ -36,9 +36,7 @@ app = FastAPI(
     title=settings.APP_NAME,
     description="Multi-tenant Organization Management Service with MongoDB",
     version="1.0.0",
-    lifespan=lifespan,
-    redoc_url="/redoc",
-    docs_url="/docs"
+    lifespan=lifespan
 )
 
 # CORS Middleware
@@ -170,6 +168,13 @@ async def root():
             .health-link:hover {
                 box-shadow: 0 8px 25px rgba(67, 233, 123, 0.6);
             }
+            .admin-link {
+                background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+                box-shadow: 0 5px 15px rgba(250, 112, 154, 0.4);
+            }
+            .admin-link:hover {
+                box-shadow: 0 8px 25px rgba(250, 112, 154, 0.6);
+            }
             .grid-item {
                 display: flex;
                 flex-direction: column;
@@ -200,7 +205,10 @@ async def root():
                 <div class="grid-item">
                     <a href="/redoc" class="redoc-link">📖 ReDoc</a>
                 </div>
-                <div class="grid-item grid-full">
+                <div class="grid-item">
+                    <a href="/admin/login" class="admin-link">🔐 Admin Login</a>
+                </div>
+                <div class="grid-item">
                     <a href="/health" class="health-link">💚 Health Check</a>
                 </div>
             </div>
@@ -285,3 +293,30 @@ async def create_sample_data():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=settings.DEBUG)
+
+
+# Custom ReDoc endpoint (since automatic one was not working)
+@app.get("/redoc", response_class=HTMLResponse, include_in_schema=False)
+async def redoc_html():
+    """ReDoc API documentation"""
+    return """
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>ReDoc - Organization Management Service</title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+        <style>
+          body {
+            margin: 0;
+            padding: 0;
+          }
+        </style>
+      </head>
+      <body>
+        <redoc spec-url='/openapi.json'></redoc>
+        <script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
+      </body>
+    </html>
+    """
