@@ -29,7 +29,7 @@ A multi-tenant backend service built with **FastAPI** and **MongoDB** that suppo
 
 ## 🌐 Live Demo
 
-**No setup required!** Test the API directly:
+**No setup required!** Test the API directly with pre-loaded demo data:
 
 | Resource | URL |
 |----------|-----|
@@ -37,7 +37,65 @@ A multi-tenant backend service built with **FastAPI** and **MongoDB** that suppo
 | **Swagger Docs** | `https://organization-management-service-1.onrender.com/docs` |
 | **ReDoc** | `https://organization-management-service-1.onrender.com/redoc` |
 
-## �️ Architecture
+### 🎯 Quick Start - Test the API
+
+**Step 1**: Visit the home page: https://organization-management-service-1.onrender.com
+
+You'll see 3 clickable buttons to explore:
+- 📚 **Swagger Docs** - Interactive API testing
+- 📖 **ReDoc** - Beautiful API documentation  
+- 💚 **Health Check** - Database status
+
+**Step 2**: Login with any of these demo credentials in Swagger Docs:
+
+| Organization | Email | Password |
+|---|---|---|
+| **TechCorp Solutions** | admin@techcorp.com | TechCorp@2025 |
+| **StartUp Hub** | admin@startuphub.com | StartUp@2025 |
+| **Global Enterprises** | admin@globalenterprises.com | Global@2025 |
+
+**Step 3**: Click `/admin/login` endpoint → Enter credentials → Get JWT token
+
+**Step 4**: Test other endpoints using the JWT token:
+- `GET /org/get` - View organization details
+- `GET /org/get?organization_name=TechCorp Solutions` - Get specific org
+- `DELETE /org/delete` - Delete organization (needs token)
+
+### 📊 Demo Data Included
+
+Each organization comes pre-loaded with:
+- ✅ Organization metadata stored in Master Database
+- ✅ Admin user account with hashed password
+- ✅ Dedicated MongoDB collection for the organization
+- ✅ 3 sample employee records per organization for exploration
+
+Example data structure for TechCorp Solutions:
+```json
+{
+  "organization_name": "TechCorp Solutions",
+  "collection_name": "org_techcorp_solutions",
+  "admin_email": "admin@techcorp.com",
+  "sample_employees": [
+    {
+      "name": "Employee 1 - TechCorp Solutions",
+      "email": "emp1@techcorpsolutions.com",
+      "department": "Engineering"
+    },
+    {
+      "name": "Employee 2 - TechCorp Solutions",
+      "email": "emp2@techcorpsolutions.com",
+      "department": "Marketing"
+    },
+    {
+      "name": "Employee 3 - TechCorp Solutions",
+      "email": "emp3@techcorpsolutions.com",
+      "department": "Sales"
+    }
+  ]
+}
+```
+
+## 🏗️ Architecture
 
 ### High-Level Architecture
 
@@ -228,6 +286,11 @@ Or using uvicorn directly:
 ```bash
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
+
+**Important**: When the application starts, it will automatically:
+1. Connect to MongoDB
+2. Seed the database with 3 demo organizations (if not already present)
+3. Create sample employee records for exploration
 
 The API will be available at:
 - **API**: http://127.0.0.1:8000
@@ -472,6 +535,35 @@ Authenticates an admin and returns a JWT token.
   "admin_id": "65a1b2c3d4e5f6g7h8i9j0k2",
   "organization_id": "65a1b2c3d4e5f6g7h8i9j0k1",
   "organization_name": "Acme Corp"
+}
+```
+
+---
+
+#### 6. Create Sample Data (Demo)
+**POST** `/demo/create-sample-data`
+
+Creates pre-populated demo organizations with sample employees.
+
+**Response** (200 OK):
+```json
+{
+  "message": "Sample data created successfully",
+  "organization": {
+    "id": "65a1b2c3d4e5f6g7h8i9j0k1",
+    "name": "Demo Company",
+    "collection": "org_demo_company",
+    "admin_email": "admin@democompany.com"
+  },
+  "credentials": {
+    "email": "admin@democompany.com",
+    "password": "Demo@123456"
+  },
+  "next_steps": [
+    "Use /admin/login endpoint to get JWT token",
+    "Use the token to access protected endpoints",
+    "Visit /docs to test all endpoints"
+  ]
 }
 ```
 
