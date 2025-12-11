@@ -15,6 +15,12 @@ async def lifespan(app: FastAPI):
     try:
         db_connection.connect()
         print("Database connection established")
+        
+        # Seed demo data on startup
+        print("\nInitializing demo data...")
+        from app.seed_data import seed_demo_data
+        seed_demo_data()
+        
     except Exception as e:
         print(f"Error connecting to database: {e}")
     
