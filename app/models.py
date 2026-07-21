@@ -19,7 +19,7 @@ class Organization:
         self.collection_name = collection_name
         self.admin_id = admin_id
         self.admin_email = admin_email
-        self.created_at = created_at or datetime.utcnow()
+        self.created_at = created_at or datetime.now(timezone.utc)
         self.updated_at = updated_at
         self.organization_id = organization_id
     
@@ -63,7 +63,7 @@ class Admin:
         self.email = email
         self.hashed_password = hashed_password
         self.organization_id = organization_id
-        self.created_at = created_at or datetime.utcnow()
+        self.created_at = created_at or datetime.now(timezone.utc)
         self.admin_id = admin_id
     
     def to_dict(self) -> dict:
