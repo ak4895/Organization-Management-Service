@@ -62,19 +62,19 @@ def seed_demo_data():
                     "name": f"Employee 1 - {org.organization_name}",
                     "email": f"emp1@{org.organization_name.lower().replace(' ', '')}.com",
                     "department": "Engineering",
-                    "created_at": datetime.utcnow()
+                    "created_at": datetime.now(timezone.utc)
                 },
                 {
                     "name": f"Employee 2 - {org.organization_name}",
                     "email": f"emp2@{org.organization_name.lower().replace(' ', '')}.com",
                     "department": "Marketing",
-                    "created_at": datetime.utcnow()
+                    "created_at": datetime.now(timezone.utc)
                 },
                 {
                     "name": f"Employee 3 - {org.organization_name}",
                     "email": f"emp3@{org.organization_name.lower().replace(' ', '')}.com",
                     "department": "Sales",
-                    "created_at": datetime.utcnow()
+                    "created_at": datetime.now(timezone.utc)
                 }
             ]
             

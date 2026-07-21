@@ -51,7 +51,7 @@ class OrganizationService:
             "collection_name": collection_name,
             "admin_id": None,  # Will be updated after admin creation
             "admin_email": email,
-            "created_at": datetime.utcnow(),
+            "created_at": datetime.now(timezone.utc),
             "updated_at": None
         }
         
@@ -64,7 +64,7 @@ class OrganizationService:
             "email": email,
             "hashed_password": hashed_password,
             "organization_id": organization_id,
-            "created_at": datetime.utcnow()
+            "created_at": datetime.now(timezone.utc)
         }
         
         # Insert admin
@@ -146,7 +146,7 @@ class OrganizationService:
                 "$set": {
                     "organization_name": new_organization_name,
                     "collection_name": new_collection_name,
-                    "updated_at": datetime.utcnow()
+                    "updated_at": datetime.now(timezone.utc)
                 }
             }
         )
